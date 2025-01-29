@@ -7,7 +7,7 @@ This C# Console Application checks if the Microsoft WebView2 Runtime is installe
 - Windows operating system
 
 ## Installation
-1. Download the `Release` folder
+1. Download the `Release` folder (or download Release.zip from the Releases page)
 3. Run the executable (`WebView2Installer.exe`).
 
 ## How It Works
