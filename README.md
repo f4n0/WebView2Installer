@@ -8,7 +8,7 @@ This C# Library checks if the Microsoft WebView2 Runtime is installed on the sys
 
 ## Usage
 You have 2 ways:
-1. Download Release.zip from the Releases page. This contains the Console application ready to Run
+1. Download Cli.zip from the latest build artifact. This contains the Console application ready to Run
 2. Add the WebView2Installer nuget package to your solution. The package is available from Nuget.org
 
 ## How It Works
