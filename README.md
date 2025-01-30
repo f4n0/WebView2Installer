@@ -1,14 +1,15 @@
 # Simple WebView2 Runtime Checker
 
 ## Overview
-This C# Console Application checks if the Microsoft WebView2 Runtime is installed on the system. If the runtime is not found, the application will automatically download and install it.
+This C# Library checks if the Microsoft WebView2 Runtime is installed on the system. If the runtime is not found, the application will automatically download and install it.
 
 ## Prerequisites
 - Windows operating system
 
-## Installation
-1. Download the `Release` folder (or download Release.zip from the Releases page)
-3. Run the executable (`WebView2Installer.exe`).
+## Usage
+You have 2 ways:
+1. Download Release.zip from the Releases page. This contains the Console application ready to Run
+2. Add the WebView2Installer nuget package to your solution. The package is available from Nuget.org
 
 ## How It Works
 1. The application checks the system for the WebView2 Runtime.
