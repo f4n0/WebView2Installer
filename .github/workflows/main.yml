@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v3
@@ -33,7 +33,7 @@ jobs:
       run: dotnet publish WebView2Installer.Cli/WebView2Installer.Cli.csproj -r win-x64 -c Release -o Cli/x86    
     - name: Pack    
       if: github.event_name != 'pull_request'
-      run: dotnet pack "WebView2Installer/WebView2Installer.csproj" -c Release -o out -p:PackageVersion=1.1.${{ github.run_number }}
+      run: dotnet pack "WebView2Installer/WebView2Installer.csproj" -c Release -o out -p:PackageVersion=1.0.${{ github.run_number }}
     - name: Push generated package to GitHub registry
       if: github.event_name != 'pull_request'
       run: dotnet nuget push ./out/*.nupkg --source "https://nuget.pkg.github.com/f4n0/index.json" --api-key ${{ secrets.GITHUB_TOKEN }} 
