@@ -41,12 +41,16 @@ jobs:
       run: dotnet pack "WebView2Installer/WebView2Installer.csproj" -c Release -o out -p:PackageVersion=1.0.${{ github.run_number }}
     - name: Push generated package to GitHub registry
       if: github.event_name != 'pull_request'
-      run: dotnet nuget push ./WebView2Installer/out/*.nupkg --source "https://nuget.pkg.github.com/f4n0/index.json" --api-key ${{ secrets.GITHUB_TOKEN }} 
+      run: |
+        cd WebView2Installer/out
+        dotnet nuget push *.nupkg --source "https://nuget.pkg.github.com/f4n0/index.json" --api-key ${{ secrets.GITHUB_TOKEN }} 
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
     - name: Push generated package to Nuget registry
       if: github.event_name != 'pull_request'
       env:
         NUGET_TOKEN: ${{secrets.NUGET_TOKEN}}  
-      run: dotnet nuget push ./WebView2Installer/out/*.nupkg --source "https://api.nuget.org/v3/index.json" --api-key "$NUGET_TOKEN"
+      run: |
+        cd WebView2Installer/out
+        dotnet nuget push *.nupkg  --source "https://api.nuget.org/v3/index.json" --api-key "$NUGET_TOKEN"
       
