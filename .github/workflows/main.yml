@@ -1,0 +1,57 @@
+name: Build & Pack
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 9.0.x
+      env:
+        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}  
+    - name: Restore dependencies WebView2Installer
+      run: dotnet restore WebView2Installer/WebView2Installer.csproj
+    - name: Build WebView2Installer
+      run: dotnet build --no-restore WebView2Installer/WebView2Installer.csproj
+    - name: Restore dependencies WebView2Installer.Cli
+      run: dotnet restore WebView2Installer.Cli/WebView2Installer.Cli.csproj
+    - name: Build WebView2Installer.Cli
+      run: dotnet build --no-restore WebView2Installer.Cli/WebView2Installer.Cli.csproj
+    - name: Publish WebView2Installer.Cli x64
+      run: dotnet publish WebView2Installer.Cli/WebView2Installer.Cli.csproj -r win-x64 -c Release -o Cli/x64
+    - name: Publish WebView2Installer.Cli x86
+      run: dotnet publish WebView2Installer.Cli/WebView2Installer.Cli.csproj -r win-x64 -c Release -o Cli/x86    
+    - name: 'Upload Artifact'
+      uses: actions/upload-artifact@v4
+      with:
+        name: Cli
+        path: Cli
+    - name: Pack    
+      if: github.event_name != 'pull_request'
+      run: dotnet pack "WebView2Installer/WebView2Installer.csproj" -c Release -o out -p:PackageVersion=1.0.${{ github.run_number }}
+    - name: Push generated package to GitHub registry
+      if: github.event_name != 'pull_request'
+      run: |
+        write-host $pwd
+        cd out
+        dotnet nuget push *.nupkg --source "https://nuget.pkg.github.com/f4n0/index.json" --api-key ${{ secrets.GITHUB_TOKEN }} 
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    - name: Push generated package to Nuget registry
+      if: github.event_name != 'pull_request'
+      env:
+        NUGET_TOKEN: ${{secrets.NUGET_TOKEN}}  
+      run: |
+        cd out
+        dotnet nuget push *.nupkg  --source "https://api.nuget.org/v3/index.json" --api-key "$NUGET_TOKEN"
+      
