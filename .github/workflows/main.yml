@@ -53,5 +53,5 @@ jobs:
         NUGET_TOKEN: ${{secrets.NUGET_TOKEN}}  
       run: |
         cd out
-        dotnet nuget push *.nupkg  --source "https://api.nuget.org/v3/index.json" --api-key "$NUGET_TOKEN"
+        dotnet nuget push *.nupkg  --source "https://api.nuget.org/v3/index.json" --api-key "$env:NUGET_TOKEN"
       
